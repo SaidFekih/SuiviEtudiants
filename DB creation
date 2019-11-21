@@ -1,0 +1,88 @@
+USE [master]
+GO
+
+/****** Object:  Database [College]    Script Date: 2018-08-21 07:59:42 ******/
+CREATE DATABASE [College]
+GO
+
+USE [College]
+GO
+
+/****** Object:  Table [dbo].[tblEtudiants]    Script Date: 2018-05-26 11:20:05 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblProgrammes](
+	[IdProgramme] [varchar](6) NOT NULL,
+	[Titre] [nvarchar](100) NULL,
+ CONSTRAINT [PK_tblProgrammes] PRIMARY KEY CLUSTERED 
+ (
+	[IdProgramme] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+CREATE TABLE [dbo].[tblUtilisateurs](
+	[IdUtilisateur] [char](5) NOT NULL,
+	[Prenom] [varchar](15) NULL,
+	[Nom] [varchar](15) NULL,
+	[NomUtilisateur] [varchar](25) NULL,
+	[MotPasse] [varchar](25) NULL,
+ CONSTRAINT [PK_tblUtilisateurs] PRIMARY KEY CLUSTERED 
+(
+	[IdUtilisateur] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[tblEtudiants](
+	[IdEtudiant] [char](10) NOT NULL,
+	[Prenom] [nvarchar](25) NOT NULL,
+	[Nom] [nvarchar](25) NOT NULL,
+	[Adresse] [nvarchar](50) NOT NULL,
+	[Ville] [nvarchar](50) NOT NULL,
+	[Province] [char](2) NOT NULL,
+	[CodePostal] [char](7) NOT NULL,
+	[Telephone] [char](14) NOT NULL,
+	[CodeProgramme] [varchar](6) NOT NULL,
+	[IdInstructeur] [char](5) NOT NULL,
+	[Statut] [smallint] NOT NULL,
+ CONSTRAINT [PK_tblEtudiants] PRIMARY KEY CLUSTERED 
+(
+	[IdEtudiant] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[tblEtudiants] ADD  CONSTRAINT [DF_tblEtudiants_Statut]  DEFAULT ((-1)) FOR [Statut]
+GO
+
+ALTER TABLE [dbo].[tblEtudiants] ADD CONSTRAINT FK_Etudiants_Instructeur FOREIGN KEY (IdInstructeur) REFERENCES [dbo].[tblUtilisateurs] (IdUtilisateur)
+GO
+
+ALTER TABLE [dbo].[tblEtudiants] ADD CONSTRAINT FK_Etudiants_Programme FOREIGN KEY (CodeProgramme) REFERENCES [dbo].[tblProgrammes] (IdProgramme)
+GO
+
+INSERT INTO tblProgrammes VALUES('LEA.9C','Programmeur-analyste - orienté Internet')
+INSERT INTO tblProgrammes VALUES('LEA.AE','Gestionnaire en réseautique - spécialiste de la sécurité')
+GO
+
+INSERT INTO tblUtilisateurs VALUES('yd001','Yves','Desharnais','ydesharnais','Chanelle2010')
+INSERT INTO tblUtilisateurs VALUES('ml001','Michel','Leduc','mleduc','projet9898')
+GO
+
+INSERT INTO tblEtudiants VALUES('653-001234','Mélanie','St-Laurent','9875 boul. St-Laurent','Montréal','Qc','H7A 1B2','(514) 325-6158','LEA.AE','ml001',1)
+INSERT INTO tblEtudiants VALUES('653-001235','Grace','Kelly','2635 rue Principale','Beloeil','Qc','K9U 7J8','(450) 555-3695','LEA.AE','ml001',-1)
+INSERT INTO tblEtudiants VALUES('653-002525','Gary','Fisher','3275 Crescent','Montréal','Qc','H1H 2B6','(514) 385-6952','LEA.AE','ml001',0)
+INSERT INTO tblEtudiants VALUES('653-003320','Paul','Wagner','4555 boul. LabergeL','St-Constant','Qc','J3G 5F6','(450) 685-1254','LEA.9C','yd001',0)
+INSERT INTO tblEtudiants VALUES('653-003321','Manon','Robichaud','2536 rue de la Montagne','St-Bruno-de-Montarville','Qc','M6V 1E3','(450) 587-2659','LEA.9C','yd001',0)
+INSERT INTO tblEtudiants VALUES('653-003325','Sandrine','Latourelle','4595 English road','Mascouche','Qc','K9H 8G7','(450) 987-3216','LEA.9C','yd001',0)
+INSERT INTO tblEtudiants VALUES('653-004450','Steve','Bristoll','56 rue Principale','Châteauguay','Qc','J7J 2F7','(450) 695-6547','LEA.9C','yd001',1)
+INSERT INTO tblEtudiants VALUES('653-006543','Stéphanie','St-Jean','3795 boul. St-Joseph','Montréal','Qc','G7H 8P9','(514) 385-6549','LEA.9C','yd001',2)
+INSERT INTO tblEtudiants VALUES('653-009876','Patrick','Laberge','5775 rue Juliette','Laval','Qc','H1G 9P8','(450) 665-3755','LEA.9C','yd001',0)
+
+GO
